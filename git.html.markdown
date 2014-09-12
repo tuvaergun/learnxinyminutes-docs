@@ -2,9 +2,8 @@
 category: tool
 tool: git
 contributors:
-    - ["Jake Prather", "http:#github.com/JakeHP"]
+    - ["Jake Prather", "http://github.com/JakeHP"]
 filename: LearnGit.txt
-
 ---
 
 Git is a distributed version control and source code management system. 
@@ -41,7 +40,7 @@ Version control is a system that records changes to a file, or set of files, ove
 
 ### Repository
 
-A set of files, directories, historical records, commits, and heads. Imagine it as a source code datastructure, 
+A set of files, directories, historical records, commits, and heads. Imagine it as a source code data structure,
 with the attribute that each source code "element" gives you access to its revision history, among other things.
 
 A git repository is comprised of the .git directory & working tree.
@@ -328,6 +327,11 @@ Push and merge changes from a branch to a remote & branch.
 # git push <remote> <branch>
 # git push => implicitly defaults to => git push origin master
 $ git push origin master
+
+# To link up current local branch with a remote branch, add -u flag:
+$ git push -u origin master
+# Now, anytime you want to push from that same local branch, use shortcut:
+$ git push 
 ```
 
 ### rebase (caution) 
@@ -391,3 +395,5 @@ $ git rm /pather/to/the/file/HelloWorld.c
 * [SalesForce Cheat Sheet](https://na1.salesforce.com/help/doc/en/salesforce_git_developer_cheatsheet.pdf)
 
 * [GitGuys](http://www.gitguys.com/)
+
+* [Git - the simple guide](http://rogerdudler.github.io/git-guide/index.html)

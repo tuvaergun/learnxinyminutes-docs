@@ -5,6 +5,7 @@ contributors:
     - ["Adam Brenecki", "http://adam.brenecki.id.au"]
 translators:
     - ["wikibook", "http://wikibook.co.kr"]
+filename: javascript-kr.js
 lang: ko-kr
 ---
 
@@ -380,8 +381,8 @@ var myNumberObj = new Number(12)
 myNumber == myNumberObj // = true
 
 // 하지만 정확히 같지는 않습니다.
-typeof(myNumber) // = 'number'
-typeof(myNumberObj) // = 'object'
+typeof myNumber // = 'number'
+typeof myNumberObj // = 'object'
 myNumber === myNumberObj // = false
 if (0){
     // 0은 거짓이라서 이 코드는 실행되지 않습니다.

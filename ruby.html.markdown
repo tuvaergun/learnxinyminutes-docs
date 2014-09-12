@@ -7,6 +7,10 @@ contributors:
   - ["Luke Holder", "http://twitter.com/lukeholder"]
   - ["Tristan Hume", "http://thume.ca/"]
   - ["Nick LaMuro", "https://github.com/NickLaMuro"]
+  - ["Marcos Brizeno", "http://www.about.me/marcosbrizeno"]
+  - ["Ariel Krakowski", "http://www.learneroo.com"]
+  - ["Dzianis Dashkevich", "https://github.com/dskecse"]
+
 ---
 
 ```ruby
@@ -32,6 +36,7 @@ You shouldn't either
 8 - 1 #=> 7
 10 * 2 #=> 20
 35 / 5 #=> 7
+2**5 #=> 32
 
 # Arithmetic is just syntactic sugar
 # for calling a method on an object
@@ -74,10 +79,17 @@ false.class #=> FalseClass
 'I am a string'.class #=> String
 "I am a string too".class #=> String
 
-placeholder = "use string interpolation"
+placeholder = 'use string interpolation'
 "I can #{placeholder} when using double quoted strings"
 #=> "I can use string interpolation when using double quoted strings"
 
+# Prefer single quoted strings to double quoted ones where possible
+# Double quoted strings perform additional inner calculations
+
+# Combine strings, but not with numbers
+'hello ' + 'world'  #=> "hello world"
+'hello ' + 3 #=> TypeError: can't convert Fixnum into String
+'hello ' + 3.to_s #=> "hello 3"
 
 # print to the output
 puts "I'm printing!"
@@ -122,7 +134,7 @@ array = [1, 2, 3, 4, 5] #=> [1, 2, 3, 4, 5]
 
 # Arrays can contain different types of items
 
-[1, "hello", false] #=> [1, "hello", false]
+[1, 'hello', false] #=> [1, "hello", false]
 
 # Arrays can be indexed
 # From the front
@@ -138,8 +150,8 @@ array.[] 12 #=> nil
 # From the end
 array[-1] #=> 5
 
-# With a start and end index
-array[2, 4] #=> [3, 4, 5]
+# With a start index and length
+array[2, 3] #=> [3, 4, 5]
 
 # Or with a range
 array[1..3] #=> [2, 3, 4]
@@ -149,7 +161,7 @@ array << 6 #=> [1, 2, 3, 4, 5, 6]
 
 # Hashes are Ruby's primary dictionary with keys/value pairs.
 # Hashes are denoted with curly braces:
-hash = {'color' => 'green', 'number' => 5}
+hash = { 'color' => 'green', 'number' => 5 }
 
 hash.keys #=> ['color', 'number']
 
@@ -162,7 +174,7 @@ hash['nothing here'] #=> nil
 
 # Since Ruby 1.9, there's a special syntax when using symbols as keys:
 
-new_hash = { defcon: 3, action: true}
+new_hash = { defcon: 3, action: true }
 
 new_hash.keys #=> [:defcon, :action]
 
@@ -172,11 +184,11 @@ new_hash.keys #=> [:defcon, :action]
 # Control structures
 
 if true
-  "if statement"
+  'if statement'
 elsif false
-  "else if, optional"
+  'else if, optional'
 else
-  "else, also optional"
+  'else, also optional'
 end
 
 for counter in 1..5
@@ -208,7 +220,7 @@ end
 #=> iteration 5
 
 # You can also surround blocks in curly brackets:
-(1..5).each {|counter| puts "iteration #{counter}"}
+(1..5).each { |counter| puts "iteration #{counter}" }
 
 # The contents of data structures can also be iterated using each.
 array.each do |element|
@@ -233,18 +245,32 @@ grade = 'B'
 
 case grade
 when 'A'
-  puts "Way to go kiddo"
+  puts 'Way to go kiddo'
 when 'B'
-  puts "Better luck next time"
+  puts 'Better luck next time'
 when 'C'
-  puts "You can do better"
+  puts 'You can do better'
 when 'D'
-  puts "Scraping through"
+  puts 'Scraping through'
 when 'F'
-  puts "You failed!"
+  puts 'You failed!'
 else
-  puts "Alternative grading system, eh?"
+  puts 'Alternative grading system, eh?'
 end
+#=> "Better luck next time"
+
+# cases can also use ranges
+grade = 82
+case grade
+when 90..100
+  puts 'Hooray!'
+when 80...90
+  puts 'OK job'
+else
+  puts 'You failed!'
+end
+#=> "OK job"
+
 
 # Functions
 
@@ -260,23 +286,23 @@ double 3 #=> 6
 
 double double 3 #=> 12
 
-def sum(x,y)
+def sum(x, y)
   x + y
 end
 
 # Method arguments are separated by a comma
 sum 3, 4 #=> 7
 
-sum sum(3,4), 5 #=> 12
+sum sum(3, 4), 5 #=> 12
 
 # yield
 # All methods have an implicit, optional block parameter
 # it can be called with the 'yield' keyword
 
 def surround
-  puts "{"
+  puts '{'
   yield
-  puts "}"
+  puts '}'
 end
 
 surround { puts 'hello world' }
@@ -286,14 +312,26 @@ surround { puts 'hello world' }
 # }
 
 
+# You can pass a block to a function
+# "&" marks a reference to a passed block
+def guests(&block)
+  block.call 'some_argument'
+end
+
+# You can pass a list of arguments, which will be converted into an array
+# That's what splat operator ("*") is for
+def guests(*array)
+  array.each { |guest| puts guest }
+end
+
 # Define a class with the class keyword
 class Human
 
   # A class variable. It is shared by all instances of this class.
-  @@species = "H. sapiens"
+  @@species = 'H. sapiens'
 
   # Basic initializer
-  def initialize(name, age=0)
+  def initialize(name, age = 0)
     # Assign the argument to the "name" instance variable for the instance
     @name = name
     # If no age given, we will fall back to the default in the arguments list.
@@ -310,23 +348,29 @@ class Human
     @name
   end
 
+  # The above functionality can be encapsulated using the attr_accessor method as follows
+  attr_accessor :name
+
+  # Getter/setter methods can also be created individually like this
+  attr_reader :name
+  attr_writer :name
+
   # A class method uses self to distinguish from instance methods.
   # It can only be called on the class, not an instance.
   def self.say(msg)
-    puts "#{msg}"
+    puts msg
   end
 
   def species
     @@species
   end
-
 end
 
 
 # Instantiate a class
-jim = Human.new("Jim Halpert")
+jim = Human.new('Jim Halpert')
 
-dwight = Human.new("Dwight K. Schrute")
+dwight = Human.new('Dwight K. Schrute')
 
 # Let's call a couple of methods
 jim.species #=> "H. sapiens"
@@ -337,9 +381,26 @@ dwight.species #=> "H. sapiens"
 dwight.name #=> "Dwight K. Schrute"
 
 # Call the class method
-Human.say("Hi") #=> "Hi"
+Human.say('Hi') #=> "Hi"
 
-# Class also is object in ruby. So class can have instance variables.
+# Variable's scopes are defined by the way we name them.
+# Variables that start with $ have global scope
+$var = "I'm a global var"
+defined? $var #=> "global-variable"
+
+# Variables that start with @ have instance scope
+@var = "I'm an instance var"
+defined? @var #=> "instance-variable"
+
+# Variables that start with @@ have class scope
+@@var = "I'm a class var"
+defined? @@var #=> "class variable"
+
+# Variables that start with a capital letter are constants
+Var = "I'm a constant"
+defined? Var #=> "constant"
+
+# Class is also an object in ruby. So class can have instance variables.
 # Class variable is shared among the class and all of its descendants.
 
 # base class
@@ -355,7 +416,7 @@ class Human
   end
 end
 
-#  derived class
+# derived class
 class Worker < Human
 end
 
@@ -385,4 +446,63 @@ end
 Human.bar # 0
 Doctor.bar # nil
 
+module ModuleExample
+  def foo
+    'foo'
+  end
+end
+
+# Including modules binds their methods to the class instances
+# Extending modules binds their methods to the class itself
+
+class Person
+  include ModuleExample
+end
+
+class Book
+  extend ModuleExample
+end
+
+Person.foo     # => NoMethodError: undefined method `foo' for Person:Class
+Person.new.foo # => 'foo'
+Book.foo       # => 'foo'
+Book.new.foo   # => NoMethodError: undefined method `foo'
+
+# Callbacks are executed when including and extending a module
+
+module ConcernExample
+  def self.included(base)
+    base.extend(ClassMethods)
+    base.send(:include, InstanceMethods)
+  end
+
+  module ClassMethods
+    def bar
+      'bar'
+    end
+  end
+
+  module InstanceMethods
+    def qux
+      'qux'
+    end
+  end
+end
+
+class Something
+  include ConcernExample
+end
+
+Something.bar     # => 'bar'
+Something.qux     # => NoMethodError: undefined method `qux'
+Something.new.bar # => NoMethodError: undefined method `bar'
+Something.new.qux # => 'qux'
 ```
+
+## Additional resources
+
+- [Learn Ruby by Example with Challenges](http://www.learneroo.com/modules/61/nodes/338) - A variant of this reference with in-browser challenges.
+- [Official Documentation](http://www.ruby-doc.org/core-2.1.1/)
+- [Ruby from other languages](https://www.ruby-lang.org/en/documentation/ruby-from-other-languages/)
+- [Programming Ruby](http://www.amazon.com/Programming-Ruby-1-9-2-0-Programmers/dp/1937785491/) - An older [free addition](http://ruby-doc.com/docs/ProgrammingRuby/) is available online.
+- [Ruby Style Guide](https://github.com/bbatsov/ruby-style-guide) - A community-driven Ruby coding style guide.

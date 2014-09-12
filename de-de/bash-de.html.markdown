@@ -1,14 +1,22 @@
-﻿---
-language: bash
-contributors:
-    - ["Jake Prather", "http:#github.com/JakeHP"]
-    - ["kultprok", "http://www.kulturproktologie.de"]
-filename: LearnBash-de.bash
+---
+category: tool
+tool: bash
 lang: de-de
+contributors:
+    - ["Max Yankov", "https://github.com/golergka"]
+    - ["Darren Lin", "https://github.com/CogBear"]
+translators:
+    - ["kultprok", "http://www.kulturproktologie.de"]
+filename: LearnBash-de.sh
 ---
 
+Bash ist der Name der Unix-Shell, die als Shell des GNU-Betriebssystems und auch als Standard-Shell von Linux und Mac OS X ausgeliefert wurde.
+Beinahe alle der folgenden Beispiele können als Teile eines Shell-Skripts oder direkt in der Shell ausgeführt werden.
+
+[Weitere Informationen \(Englisch\)](http://www.gnu.org/software/bash/manual/bashref.html)
+
 ```bash
-#!/bin/sh
+#!/bin/bash
 # Die erste Zeile des Scripts nennt sich Shebang in gibt dem System an, wie
 # wie das Script ausgeführt werden soll: http://de.wikipedia.org/wiki/Shebang
 # Du hast es bestimmt schon mitgekriegt, Kommentare fangen mit # an. Das Shebang ist auch ein Kommentar
